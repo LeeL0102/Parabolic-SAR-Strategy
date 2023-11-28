@@ -1,0 +1,24 @@
+//@version=5
+strategy("Parabolic SAR Strategy", overlay=true)
+
+// Parabolic SAR 参数
+start = input(0.02, title="Start")
+increment = input(0.02, title="Increment")
+maximum = input(0.2, title="Maximum")
+
+// 计算 Parabolic SAR
+sar = ta.sar(start, increment, maximum)
+
+// 定义买入和卖出条件
+longCondition = close > sar
+shortCondition = close < sar
+
+// 执行策略
+if (longCondition)
+    strategy.entry("Long", strategy.long)
+
+if (shortCondition)
+    strategy.close("Long")
+
+// 绘制 Parabolic SAR
+plot(sar, title="Parabolic SAR", color=color.red, style=plot.style_circles)
